@@ -7,7 +7,8 @@ class DatabaseConnection:
         self.conn = self.db.connect()
         self.cursor = self.conn.cursor()
 
-    def create_table(self):
+    @staticmethod
+    def create_customers_table():
         query = """
             CREATE TABLE IF NOT EXISTS customers (
                 customer_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -17,6 +18,16 @@ class DatabaseConnection:
                 pincode INT,
                 phone_number BIGINT UNIQUE,
                 email VARCHAR(255) UNIQUE,
+                aadhar_number BIGINT UNIQUE,
+            )
+        """
+
+    @staticmethod
+    def create_accounts_table():
+        query = """
+            CREATE TABLE IF NOT EXISTS accounts (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                account_number BIGINT UNIQUE,
                 
             )
         """
