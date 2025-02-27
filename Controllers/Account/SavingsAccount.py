@@ -1,26 +1,33 @@
-from Account import Account
+from typing_extensions import override
+
+from Controllers.Account import Account
+from Models.SavingsAccountSchema import SavingsAccountSchema
 
 class SavingsAccount(Account):
 
-    def __init__(self, account_number: int, customer_id: int, customer_phone_number: int, account_type: str, balance: float, date_opened: str, status: str, interest_rate: float):
+    def __init__(self, savings_account_data: SavingsAccountSchema):
 
-        super().__init__(account_number, customer_id, customer_phone_number,account_type, balance, date_opened, status)
+        super().__init__(savings_account_data.account_number, savings_account_data.customer_id, savings_account_data.customer_phone_number, savings_account_data.account_type, savings_account_data.balance, savings_account_data.date_opened, savings_account_data.status)
 
-        self.interest_rate = interest_rate
-        self.minimum_balance = 500
+        self.interest_rate = savings_account_data.interest_rate
+        self.minimum_balance = savings_account_data.minimum_balance
 
+    @override
     def get_balance(self) -> float:
         return self.balance
 
+    @override
     def get_account_number(self) -> int:
         return self.account_number
 
+    @override
     def deposit(self, amount) -> bool:
         if amount > 0:
             self.balance += amount
             return True
         return False
 
+    @override
     def withdraw(self, amount) -> bool:
         if self.balance - amount >= self.minimum_balance:
             self.balance -= amount

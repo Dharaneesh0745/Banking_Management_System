@@ -1,26 +1,33 @@
-from Account import Account
+from typing_extensions import override
+
+from Controllers.Account import Account
+from Models.CurrentAccountSchema import CurrentAccountSchema
 
 class CurrentAccount(Account):
 
-    def __init__(self, account_number: int, customer_id: int, customer_phone_number: int, account_type: str, balance: float, date_opened: str, status: str, overdraft_limit: float):
+    def __init__(self, current_account_data: CurrentAccountSchema):
 
-        super().__init__(account_number, customer_id, customer_phone_number,account_type, balance, date_opened, status)
+        super().__init__(current_account_data.account_number, current_account_data.customer_id, current_account_data.customer_phone_number, current_account_data.account_type, current_account_data.balance, current_account_data.date_opened, current_account_data.status)
 
-        self.overdraft_limit = overdraft_limit
-        self.monthly_fee = 5.0
+        self.overdraft_limit = current_account_data.overdraft_limit
+        self.monthly_fee = current_account_data.monthly_fee
 
+    @override
     def get_balance(self) -> float:
         return self.balance
 
+    @override
     def get_account_number(self) -> int:
         return self.account_number
 
+    @override
     def deposit(self, amount) -> bool:
         if amount > 0:
             self.balance += amount
             return True
         return False
 
+    @override
     def withdraw(self, amount: float) -> bool:
         if amount > 0 and (self.balance - amount) >= -self.overdraft_limit:
             self.balance -= amount
